@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: smarthomeserver-ingress
+spec:
+  rules:
+  - host: smarthomeserver.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: smarthomeserver
+            port:
+              number: 5002
+

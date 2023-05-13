@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.28.0 (c4137012e)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: smarthomeserver
+  name: smarthomeserver
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: smarthomeserver
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.28.0 (c4137012e)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/docker-compose-servicenetwork: "true"
+        io.kompose.service: smarthomeserver
+    spec:
+      containers:
+        - env:
+            - name: DatabaseSettings__ConnectionString
+              value: mongodb://mongo:27017
+            - name: Settings__MqttHost
+              value: mosquitto
+            - name: Settings__MqttPort
+              value: "1883"
+          image: smarthomeserver:1.0.0
+          name: smarthomeserver
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+          resources: {}
+      restartPolicy: Always
+status: {}
